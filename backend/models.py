@@ -1,7 +1,12 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text, Date
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text, Date, Table
 from sqlalchemy.orm import relationship
 
 from .database import Base
+
+prompt_likes = Table('prompt_likes', Base.metadata,
+    Column('user_id', Integer, ForeignKey('users.id'), primary_key=True),
+    Column('prompt_id', Integer, ForeignKey('prompts.id'), primary_key=True)
+)
 
 class TimelineEvent(Base):
     __tablename__ = "timeline_events"
@@ -25,6 +30,7 @@ class Tutorial(Base):
     content = Column(Text)
     difficulty = Column(String) # e.g., "Beginner", "Intermediate", "Expert"
     cover_image_url = Column(String, nullable=True)
+    comments = relationship("Comment", back_populates="tutorial")
 
 
 class Prompt(Base):
@@ -40,6 +46,10 @@ class Prompt(Base):
     author_id = Column(Integer, ForeignKey("users.id")) # Assuming a User model
 
     author = relationship("User", back_populates="prompts")
+    liked_by = relationship(
+        "User",
+        secondary=prompt_likes,
+        back_populates="liked_prompts")
 
 
 class User(Base):
@@ -50,5 +60,24 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
+    full_name = Column(String, nullable=True)
+    bio = Column(Text, nullable=True)
+    avatar_url = Column(String, nullable=True)
 
     prompts = relationship("Prompt", back_populates="author")
+    liked_prompts = relationship(
+        "Prompt",
+        secondary=prompt_likes,
+        back_populates="liked_by")
+    comments = relationship("Comment", back_populates="author")
+
+class Comment(Base):
+    __tablename__ = "comments"
+
+    id = Column(Integer, primary_key=True, index=True)
+    text = Column(Text, nullable=False)
+    author_id = Column(Integer, ForeignKey("users.id"))
+    tutorial_id = Column(Integer, ForeignKey("tutorials.id"))
+
+    author = relationship("User")
+    tutorial = relationship("Tutorial")

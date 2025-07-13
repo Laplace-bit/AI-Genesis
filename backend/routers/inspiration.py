@@ -15,9 +15,11 @@ def get_db():
     finally:
         db.close()
 
+from ..routers.auth import get_current_user
+
 @router.post("/prompts/", response_model=schemas.Prompt)
-def create_prompt(prompt: schemas.PromptCreate, db: Session = Depends(get_db)):
-    return crud.create_prompt(db=db, prompt=prompt)
+def create_prompt(prompt: schemas.PromptCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    return crud.create_prompt(db=db, prompt=prompt, author_id=current_user.id)
 
 @router.get("/prompts/", response_model=List[schemas.Prompt])
 def read_prompts(skip: int = 0, limit: int = 100, type: str = None, style: str = None, db: Session = Depends(get_db)):
@@ -34,3 +36,22 @@ def read_prompt(prompt_id: int, db: Session = Depends(get_db)):
     if db_prompt is None:
         raise HTTPException(status_code=404, detail="Prompt not found")
     return db_prompt
+
+from sqlalchemy import func
+
+@router.post("/prompts/{prompt_id}/like", response_model=schemas.Prompt)
+def like_prompt(prompt_id: int, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    db_prompt = crud.get_prompt(db, prompt_id=prompt_id)
+    if db_prompt is None:
+        raise HTTPException(status_code=404, detail="Prompt not found")
+    if current_user in db_prompt.liked_by:
+        db_prompt.liked_by.remove(current_user)
+    else:
+        db_prompt.liked_by.append(current_user)
+    db.commit()
+    db.refresh(db_prompt)
+    return db_prompt
+
+@router.get("/prompts/leaderboard/", response_model=List[schemas.Prompt])
+def get_leaderboard(db: Session = Depends(get_db)):
+    return db.query(models.Prompt).outerjoin(models.prompt_likes).group_by(models.Prompt.id).order_by(func.count(models.prompt_likes.c.user_id).desc()).limit(10).all()

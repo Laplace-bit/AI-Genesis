@@ -1,7 +1,10 @@
 <template>
   <Layout>
     <div class="container mx-auto px-4 py-8">
-      <h1 class="text-4xl font-bold text-center my-8 text-gray-800 dark:text-white">灵感工坊</h1>
+      <div class="flex justify-between items-center my-8">
+        <h1 class="text-4xl font-bold text-center text-gray-800 dark:text-white">灵感工坊</h1>
+        <router-link to="/create-prompt" class="px-4 py-2 font-bold text-white bg-blue-600 rounded-md hover:bg-blue-700">分享你的灵感</router-link>
+      </div>
       <div class="masonry">
         <div v-for="prompt in prompts" :key="prompt.id" class="masonry-item">
           <PromptCard :prompt="prompt" />

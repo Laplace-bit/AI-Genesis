@@ -5,10 +5,16 @@ import 'element-plus/dist/index.css'
 import './style.css'
 import { createPinia } from 'pinia'
 import router from './router'
+import { useAuthStore } from './stores/auth'
 
 const app = createApp(App)
+const pinia = createPinia()
 
-app.use(createPinia())
+app.use(pinia)
 app.use(ElementPlus)
 app.use(router)
-app.mount('#app')
+
+const authStore = useAuthStore()
+authStore.fetchUser().then(() => {
+  app.mount('#app')
+})
