@@ -58,6 +58,36 @@ def seed_data():
         for tutorial in tutorials:
             crud.create_tutorial(db, tutorial)
 
+    if not crud.get_prompts(db):
+        # First, create a user
+        user = models.User(username="jules", email="jules@example.com", hashed_password="fakehashedpassword")
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+
+        prompts = [
+            schemas.PromptCreate(
+                title="赛博朋克城市",
+                prompt_text="a sprawling cyberpunk city, neon signs, flying vehicles, rainy night, cinematic lighting",
+                negative_prompt_text="sunny day, trees, nature",
+                model="Midjourney V6",
+                preview_url="https://images.unsplash.com/photo-1519681393784-d120267933ba",
+                tags="#赛博朋克, #城市",
+                author_id=user.id
+            ),
+            schemas.PromptCreate(
+                title="二次元风格的女孩",
+                prompt_text="a beautiful anime girl, long flowing hair, sparkling eyes, school uniform",
+                negative_prompt_text="realistic, 3d",
+                model="Stable Diffusion XL",
+                preview_url="https://images.unsplash.com/photo-1519681393784-d120267933ba",
+                tags="#二次元, #女孩",
+                author_id=user.id
+            ),
+        ]
+        for prompt in prompts:
+            crud.create_prompt(db, prompt)
+
     print("Data seeded successfully.")
     db.close()
 

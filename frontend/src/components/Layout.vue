@@ -11,7 +11,7 @@
               <div class="ml-10 flex items-baseline space-x-4">
                 <router-link to="/" class="nav-link">AI纪元</router-link>
                 <router-link to="/empowerment-hub" class="nav-link">AI赋能站</router-link>
-                <a href="#" class="nav-link">灵感工坊</a>
+                <router-link to="/inspiration-workshop" class="nav-link">灵感工坊</router-link>
               </div>
             </div>
           </div>

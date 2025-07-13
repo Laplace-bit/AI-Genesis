@@ -26,3 +26,16 @@ def create_tutorial(db: Session, tutorial: schemas.TutorialCreate):
     db.commit()
     db.refresh(db_tutorial)
     return db_tutorial
+
+def get_prompt(db: Session, prompt_id: int):
+    return db.query(models.Prompt).filter(models.Prompt.id == prompt_id).first()
+
+def get_prompts(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Prompt).offset(skip).limit(limit).all()
+
+def create_prompt(db: Session, prompt: schemas.PromptCreate):
+    db_prompt = models.Prompt(**prompt.dict())
+    db.add(db_prompt)
+    db.commit()
+    db.refresh(db_prompt)
+    return db_prompt

@@ -34,3 +34,22 @@ class Tutorial(TutorialBase):
 
     class Config:
         orm_mode = True
+
+
+class PromptBase(BaseModel):
+    title: str
+    prompt_text: str
+    negative_prompt_text: str | None = None
+    model: str
+    preview_url: str
+    tags: str | None = None
+
+class PromptCreate(PromptBase):
+    author_id: int
+
+class Prompt(PromptBase):
+    id: int
+    author_id: int
+
+    class Config:
+        orm_mode = True
