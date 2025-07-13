@@ -25,6 +25,7 @@ class TutorialBase(BaseModel):
     subcategory: str
     content: str
     difficulty: str
+    cover_image_url: str | None = None
 
 class TutorialCreate(TutorialBase):
     pass

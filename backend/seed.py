@@ -45,14 +45,16 @@ def seed_data():
                 category="by_industry",
                 subcategory="市场营销",
                 content="详细步骤...",
-                difficulty="入门"
+                difficulty="入门",
+                cover_image_url="https://images.unsplash.com/photo-1556155092-490a1ba16284"
             ),
             schemas.TutorialCreate(
                 title="AI辅助论文写作",
                 category="by_task",
                 subcategory="文案写作",
                 content="详细步骤...",
-                difficulty="进阶"
+                difficulty="进阶",
+                cover_image_url="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8"
             ),
         ]
         for tutorial in tutorials:

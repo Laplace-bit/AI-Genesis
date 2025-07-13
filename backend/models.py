@@ -24,6 +24,7 @@ class Tutorial(Base):
     subcategory = Column(String) # e.g., "Marketing", "Content Writing"
     content = Column(Text)
     difficulty = Column(String) # e.g., "Beginner", "Intermediate", "Expert"
+    cover_image_url = Column(String, nullable=True)
 
 
 class Prompt(Base):
