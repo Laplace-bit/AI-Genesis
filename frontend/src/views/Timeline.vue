@@ -2,13 +2,13 @@
   <Layout>
     <div>
       <h1 class="text-4xl font-bold text-center my-8 text-gray-800 dark:text-white">AI纪元</h1>
-      <div class="timeline-container relative max-w-4xl mx-auto">
-        <div v-for="(event, index) in events" :key="event.id" class="timeline-item mb-8 flex justify-between items-center w-full" :class="index % 2 === 0 ? 'flex-row-reverse' : ''">
-          <div class="order-1 w-5/12"></div>
+      <div class="timeline-container relative max-w-4xl mx-auto p-4 sm:p-0">
+        <div v-for="(event, index) in events" :key="event.id" class="timeline-item mb-8 flex justify-between items-center w-full sm:flex-row-reverse" :class="index % 2 === 0 ? 'sm:flex-row-reverse' : 'sm:flex-row'">
+          <div class="order-1 w-full sm:w-5/12"></div>
           <div class="z-20 flex items-center order-1 bg-gray-800 shadow-xl w-8 h-8 rounded-full">
             <h1 class="mx-auto font-semibold text-lg text-white">{{ index + 1 }}</h1>
           </div>
-          <div class="order-1 bg-white dark:bg-gray-800 rounded-lg shadow-xl w-5/12 px-6 py-4 transform transition-all duration-500 hover:scale-105">
+          <div class="order-1 bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full sm:w-5/12 px-6 py-4 transform transition-all duration-500 hover:scale-105">
             <h3 class="mb-3 font-bold text-gray-800 dark:text-white text-xl">{{ event.title }}</h3>
             <p class="text-sm leading-snug tracking-wide text-gray-600 dark:text-gray-400 text-opacity-100">{{ event.description }}</p>
             <div class="text-sm font-semibold text-blue-500 mt-4">
@@ -48,16 +48,19 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.timeline-container::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background-color: #4A5568; /* gray-700 */
+@media (min-width: 640px) {
+  .timeline-container::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: #4A5568; /* gray-700 */
+  }
 }
+
 .timeline-item {
   opacity: 0;
   animation: fadeIn 0.5s forwards;

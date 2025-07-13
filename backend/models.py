@@ -1,7 +1,12 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text, Date
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text, Date, Table
 from sqlalchemy.orm import relationship
 
 from .database import Base
+
+prompt_likes = Table('prompt_likes', Base.metadata,
+    Column('user_id', Integer, ForeignKey('users.id'), primary_key=True),
+    Column('prompt_id', Integer, ForeignKey('prompts.id'), primary_key=True)
+)
 
 class TimelineEvent(Base):
     __tablename__ = "timeline_events"
@@ -40,6 +45,10 @@ class Prompt(Base):
     author_id = Column(Integer, ForeignKey("users.id")) # Assuming a User model
 
     author = relationship("User", back_populates="prompts")
+    liked_by = relationship(
+        "User",
+        secondary=prompt_likes,
+        back_populates="liked_prompts")
 
 
 class User(Base):
@@ -52,3 +61,7 @@ class User(Base):
     is_active = Column(Boolean, default=True)
 
     prompts = relationship("Prompt", back_populates="author")
+    liked_prompts = relationship(
+        "Prompt",
+        secondary=prompt_likes,
+        back_populates="liked_by")

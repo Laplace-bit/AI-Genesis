@@ -6,7 +6,7 @@
       <p class="text-gray-600 dark:text-gray-400 mb-4">{{ tutorial.subcategory }}</p>
       <div class="flex justify-between items-center">
         <span class="text-sm font-semibold text-blue-500">{{ tutorial.difficulty }}</span>
-        <a href="#" class="text-sm font-semibold text-blue-500 hover:underline">查看详情</a>
+        <router-link :to="{ name: 'TutorialDetail', params: { id: tutorial.id } }" class="text-sm font-semibold text-blue-500 hover:underline">查看详情</router-link>
       </div>
     </div>
   </div>

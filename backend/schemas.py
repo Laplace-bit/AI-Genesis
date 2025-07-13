@@ -19,6 +19,30 @@ class TimelineEvent(TimelineEventBase):
         orm_mode = True
 
 
+class UserBase(BaseModel):
+    email: str
+
+class UserCreate(UserBase):
+    username: str
+    password: str
+
+class User(UserBase):
+    id: int
+    username: str
+    is_active: bool
+    prompts: list[Prompt] = []
+
+    class Config:
+        orm_mode = True
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    username: str | None = None
+
+
 class TutorialBase(BaseModel):
     title: str
     category: str
@@ -48,9 +72,22 @@ class PromptBase(BaseModel):
 class PromptCreate(PromptBase):
     author_id: int
 
-class Prompt(PromptBase):
+class User(UserBase):
     id: int
-    author_id: int
+    username: str
+    is_active: bool
+    prompts: list['Prompt'] = []
 
     class Config:
         orm_mode = True
+
+class Prompt(PromptBase):
+    id: int
+    author_id: int
+    liked_by: list['User'] = []
+
+    class Config:
+        orm_mode = True
+
+User.update_forward_refs()
+Prompt.update_forward_refs()
