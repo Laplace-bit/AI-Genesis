@@ -9,8 +9,8 @@
             </div>
             <div class="hidden md:block">
               <div class="ml-10 flex items-baseline space-x-4">
-                <a href="#" class="nav-link">AI纪元</a>
-                <a href="#" class="nav-link">AI赋能站</a>
+                <router-link to="/" class="nav-link">AI纪元</router-link>
+                <router-link to="/empowerment-hub" class="nav-link">AI赋能站</router-link>
                 <a href="#" class="nav-link">灵感工坊</a>
               </div>
             </div>

@@ -17,3 +17,20 @@ class TimelineEvent(TimelineEventBase):
 
     class Config:
         orm_mode = True
+
+
+class TutorialBase(BaseModel):
+    title: str
+    category: str
+    subcategory: str
+    content: str
+    difficulty: str
+
+class TutorialCreate(TutorialBase):
+    pass
+
+class Tutorial(TutorialBase):
+    id: int
+
+    class Config:
+        orm_mode = True

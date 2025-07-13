@@ -38,6 +38,26 @@ def seed_data():
     for event in events:
         crud.create_timeline_event(db, event)
 
+    if not crud.get_tutorials(db):
+        tutorials = [
+            schemas.TutorialCreate(
+                title="用AI在30分钟内生成一份竞品分析报告",
+                category="by_industry",
+                subcategory="市场营销",
+                content="详细步骤...",
+                difficulty="入门"
+            ),
+            schemas.TutorialCreate(
+                title="AI辅助论文写作",
+                category="by_task",
+                subcategory="文案写作",
+                content="详细步骤...",
+                difficulty="进阶"
+            ),
+        ]
+        for tutorial in tutorials:
+            crud.create_tutorial(db, tutorial)
+
     print("Data seeded successfully.")
     db.close()
 
