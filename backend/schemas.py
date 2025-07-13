@@ -21,16 +21,37 @@ class TimelineEvent(TimelineEventBase):
 
 class UserBase(BaseModel):
     email: str
+    full_name: str | None = None
+    bio: str | None = None
+    avatar_url: str | None = None
 
 class UserCreate(UserBase):
     username: str
     password: str
+
+class UserUpdate(UserBase):
+    pass
+
+class CommentBase(BaseModel):
+    text: str
+
+class CommentCreate(CommentBase):
+    tutorial_id: int
+
+class Comment(CommentBase):
+    id: int
+    author_id: int
+    author: 'User'
+
+    class Config:
+        orm_mode = True
 
 class User(UserBase):
     id: int
     username: str
     is_active: bool
     prompts: list[Prompt] = []
+    comments: list[Comment] = []
 
     class Config:
         orm_mode = True
@@ -56,6 +77,7 @@ class TutorialCreate(TutorialBase):
 
 class Tutorial(TutorialBase):
     id: int
+    comments: list[Comment] = []
 
     class Config:
         orm_mode = True

@@ -39,6 +39,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
+import { useAuthStore } from '../stores/auth';
 import Layout from '../components/Layout.vue';
 
 const title = ref('');
@@ -48,11 +49,10 @@ const model = ref('');
 const preview_url = ref('');
 const tags = ref('');
 const router = useRouter();
+const authStore = useAuthStore();
 
 const handleCreatePrompt = async () => {
   try {
-    // In a real app, you would get the token from where you stored it (e.g., localStorage)
-    const token = "YOUR_JWT_TOKEN"; // This needs to be replaced with actual token management
     const response = await axios.post('/api/v1/prompts/', {
       title: title.value,
       prompt_text: prompt_text.value,
@@ -60,9 +60,10 @@ const handleCreatePrompt = async () => {
       model: model.value,
       preview_url: preview_url.value,
       tags: tags.value,
+      author_id: authStore.user.id // Add this
     }, {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${authStore.token}`
       }
     });
     console.log(response.data);

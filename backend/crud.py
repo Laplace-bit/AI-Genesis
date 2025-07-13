@@ -60,3 +60,22 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.commit()
     db.refresh(db_user)
     return db_user
+
+def update_user(db: Session, user: models.User, user_update: schemas.UserUpdate):
+    update_data = user_update.dict(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(user, key, value)
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user
+
+def create_comment(db: Session, comment: schemas.CommentCreate, author_id: int):
+    db_comment = models.Comment(**comment.dict(), author_id=author_id)
+    db.add(db_comment)
+    db.commit()
+    db.refresh(db_comment)
+    return db_comment
+
+def get_comments_for_tutorial(db: Session, tutorial_id: int):
+    return db.query(models.Comment).filter(models.Comment.tutorial_id == tutorial_id).all()

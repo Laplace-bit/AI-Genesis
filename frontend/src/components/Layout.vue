@@ -12,6 +12,7 @@
                 <router-link to="/" class="nav-link">AI纪元</router-link>
                 <router-link to="/empowerment-hub" class="nav-link">AI赋能站</router-link>
                 <router-link to="/inspiration-workshop" class="nav-link">灵感工坊</router-link>
+                <router-link to="/leaderboard" class="nav-link">排行榜</router-link>
               </div>
             </div>
           </div>
@@ -21,8 +22,14 @@
                 <span v-if="isDarkMode">☀️</span>
                 <span v-else>🌙</span>
               </button>
-              <router-link to="/login" class="nav-link ml-4">登录</router-link>
-              <router-link to="/register" class="px-3 py-2 rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 ml-4">注册</router-link>
+              <div v-if="isLoggedIn" class="flex items-center">
+                <router-link to="/profile" class="nav-link ml-4">个人资料</router-link>
+                <button @click="authStore.logout" class="px-3 py-2 rounded-md text-sm font-medium text-white bg-red-600 hover:bg-red-700 ml-4">注销</button>
+              </div>
+              <div v-else>
+                <router-link to="/login" class="nav-link ml-4">登录</router-link>
+                <router-link to="/register" class="px-3 py-2 rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 ml-4">注册</router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -37,9 +44,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
+import { useAuthStore } from '../stores/auth';
 
 const isDarkMode = ref(false);
+const authStore = useAuthStore();
+const isLoggedIn = computed(() => authStore.isLoggedIn);
 
 const toggleTheme = () => {
   isDarkMode.value = !isDarkMode.value;

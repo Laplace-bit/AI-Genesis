@@ -24,22 +24,17 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
+import { useAuthStore } from '../stores/auth';
 import Layout from '../components/Layout.vue';
 
 const username = ref('');
 const password = ref('');
 const router = useRouter();
+const authStore = useAuthStore();
 
 const handleLogin = async () => {
   try {
-    const formData = new FormData();
-    formData.append('username', username.value);
-    formData.append('password', password.value);
-
-    const response = await axios.post('/api/v1/token', formData);
-    // In a real app, you would store the token in localStorage or a cookie
-    console.log(response.data);
+    await authStore.login(username.value, password.value);
     router.push('/');
   } catch (error) {
     console.error("Login failed:", error);

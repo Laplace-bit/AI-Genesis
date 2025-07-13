@@ -7,6 +7,8 @@ import TutorialDetail from './views/TutorialDetail.vue'
 import Login from './views/Login.vue'
 import Register from './views/Register.vue'
 import CreatePrompt from './views/CreatePrompt.vue'
+import Profile from './views/Profile.vue'
+import Leaderboard from './views/Leaderboard.vue'
 
 const routes = [
   {
@@ -33,6 +35,16 @@ const routes = [
     path: '/create-prompt',
     name: 'CreatePrompt',
     component: CreatePrompt,
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile,
+  },
+  {
+    path: '/leaderboard',
+    name: 'Leaderboard',
+    component: Leaderboard,
   },
   {
     path: '/login',

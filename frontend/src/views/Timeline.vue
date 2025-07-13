@@ -2,6 +2,9 @@
   <Layout>
     <div>
       <h1 class="text-4xl font-bold text-center my-8 text-gray-800 dark:text-white">AI纪元</h1>
+      <div class="flex justify-center mb-8">
+        <input v-model="searchQuery" @input="fetchEvents" type="text" placeholder="搜索事件..." class="p-2 border rounded-md w-full max-w-lg">
+      </div>
       <div class="timeline-container relative max-w-4xl mx-auto p-4 sm:p-0">
         <div v-for="(event, index) in events" :key="event.id" class="timeline-item mb-8 flex justify-between items-center w-full sm:flex-row-reverse" :class="index % 2 === 0 ? 'sm:flex-row-reverse' : 'sm:flex-row'">
           <div class="order-1 w-full sm:w-5/12"></div>
@@ -31,11 +34,15 @@ import axios from 'axios';
 import Layout from '../components/Layout.vue';
 
 const events = ref([]);
+const searchQuery = ref('');
 
 const fetchEvents = async () => {
   try {
-    // Note: The proxy in vite.config.js will forward this request to the backend.
-    const response = await axios.get('/api/v1/timeline/');
+    const params = new URLSearchParams();
+    if (searchQuery.value) {
+      params.append('q', searchQuery.value);
+    }
+    const response = await axios.get(`/api/v1/timeline/?${params.toString()}`);
     events.value = response.data;
   } catch (error) {
     console.error("Error fetching timeline events:", error);

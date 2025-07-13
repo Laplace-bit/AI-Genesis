@@ -28,22 +28,18 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
+import { useAuthStore } from '../stores/auth';
 import Layout from '../components/Layout.vue';
 
 const username = ref('');
 const email = ref('');
 const password = ref('');
 const router = useRouter();
+const authStore = useAuthStore();
 
 const handleRegister = async () => {
   try {
-    const response = await axios.post('/api/v1/users/', {
-      username: username.value,
-      email: email.value,
-      password: password.value,
-    });
-    console.log(response.data);
+    await authStore.register(username.value, email.value, password.value);
     router.push('/login');
   } catch (error) {
     console.error("Registration failed:", error);

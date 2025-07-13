@@ -37,6 +37,8 @@ def read_prompt(prompt_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Prompt not found")
     return db_prompt
 
+from sqlalchemy import func
+
 @router.post("/prompts/{prompt_id}/like", response_model=schemas.Prompt)
 def like_prompt(prompt_id: int, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     db_prompt = crud.get_prompt(db, prompt_id=prompt_id)
@@ -49,3 +51,7 @@ def like_prompt(prompt_id: int, db: Session = Depends(get_db), current_user: mod
     db.commit()
     db.refresh(db_prompt)
     return db_prompt
+
+@router.get("/prompts/leaderboard/", response_model=List[schemas.Prompt])
+def get_leaderboard(db: Session = Depends(get_db)):
+    return db.query(models.Prompt).outerjoin(models.prompt_likes).group_by(models.Prompt.id).order_by(func.count(models.prompt_likes.c.user_id).desc()).limit(10).all()
