@@ -1,5 +1,9 @@
 <template>
-  <div>
-    <h1>Welcome to AI Genesis</h1>
-  </div>
+  <Layout>
+    <h1 class="text-3xl font-bold text-center">Welcome to AI Genesis</h1>
+  </Layout>
 </template>
+
+<script setup>
+import Layout from './components/Layout.vue'
+</script>
