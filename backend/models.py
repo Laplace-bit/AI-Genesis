@@ -1,7 +1,7 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text, Date, Table
 from sqlalchemy.orm import relationship
 
-from .database import Base
+from database import Base
 
 prompt_likes = Table('prompt_likes', Base.metadata,
     Column('user_id', Integer, ForeignKey('users.id'), primary_key=True),

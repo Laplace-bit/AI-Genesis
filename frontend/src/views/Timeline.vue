@@ -29,8 +29,8 @@
 </template>
 
 <script setup>
+import api from '@/utils/api';
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
 import Layout from '../components/Layout.vue';
 
 const events = ref([]);
@@ -42,7 +42,7 @@ const fetchEvents = async () => {
     if (searchQuery.value) {
       params.append('q', searchQuery.value);
     }
-    const response = await axios.get(`/api/v1/timeline/?${params.toString()}`);
+    const response = await api.get(`/timeline/?${params.toString()}`);
     events.value = response.data;
   } catch (error) {
     console.error("Error fetching timeline events:", error);

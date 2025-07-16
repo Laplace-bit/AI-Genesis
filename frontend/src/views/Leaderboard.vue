@@ -14,15 +14,15 @@
 </template>
 
 <script setup>
+import api from '@/utils/api';
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
 import Layout from '../components/Layout.vue';
 
 const leaderboard = ref([]);
 
 const fetchLeaderboard = async () => {
   try {
-    const response = await axios.get('/api/v1/prompts/leaderboard/');
+    const response = await api.get('/prompts/leaderboard/');
     leaderboard.value = response.data;
   } catch (error) {
     console.error("Error fetching leaderboard:", error);

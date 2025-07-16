@@ -36,9 +36,9 @@
 </template>
 
 <script setup>
+import api from '@/utils/api';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
 import { useAuthStore } from '../stores/auth';
 import Layout from '../components/Layout.vue';
 
@@ -53,7 +53,7 @@ const authStore = useAuthStore();
 
 const handleCreatePrompt = async () => {
   try {
-    const response = await axios.post('/api/v1/prompts/', {
+    const response = await api.post('/prompts/', {
       title: title.value,
       prompt_text: prompt_text.value,
       negative_prompt_text: negative_prompt_text.value,
@@ -61,10 +61,6 @@ const handleCreatePrompt = async () => {
       preview_url: preview_url.value,
       tags: tags.value,
       author_id: authStore.user.id // Add this
-    }, {
-      headers: {
-        Authorization: `Bearer ${authStore.token}`
-      }
     });
     console.log(response.data);
     router.push('/inspiration-workshop');

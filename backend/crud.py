@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from . import models, schemas
+import models, schemas
 
 def get_timeline_event(db: Session, event_id: int):
     return db.query(models.TimelineEvent).filter(models.TimelineEvent.id == event_id).first()
@@ -53,7 +53,7 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.User).offset(skip).limit(limit).all()
 
 def create_user(db: Session, user: schemas.UserCreate):
-    from .security import get_password_hash
+    from security import get_password_hash
     hashed_password = get_password_hash(user.password)
     db_user = models.User(email=user.email, username=user.username, hashed_password=hashed_password)
     db.add(db_user)

@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 
-from .. import crud, models, schemas
-from ..database import SessionLocal
+import crud, models, schemas
+from database import SessionLocal
 
 router = APIRouter()
 
@@ -15,7 +15,7 @@ def get_db():
     finally:
         db.close()
 
-from ..routers.auth import get_current_user
+from routers.auth import get_current_user
 
 @router.post("/prompts/", response_model=schemas.Prompt)
 def create_prompt(prompt: schemas.PromptCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):

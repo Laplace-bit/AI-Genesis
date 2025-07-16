@@ -33,9 +33,9 @@
 </template>
 
 <script setup>
+import api from '@/utils/api';
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import axios from 'axios';
 import { useAuthStore } from '../stores/auth';
 import Layout from '../components/Layout.vue';
 
@@ -48,7 +48,7 @@ const authStore = useAuthStore();
 const fetchTutorial = async () => {
   try {
     const tutorialId = route.params.id;
-    const response = await axios.get(`/api/v1/tutorials/${tutorialId}`);
+    const response = await api.get(`/tutorials/${tutorialId}`);
     tutorial.value = response.data;
     comments.value = response.data.comments;
   } catch (error) {
@@ -59,11 +59,9 @@ const fetchTutorial = async () => {
 const postComment = async () => {
   try {
     const tutorialId = parseInt(route.params.id, 10);
-    const response = await axios.post('/api/v1/comments/', {
+    const response = await api.post('/comments/', {
       text: newCommentText.value,
       tutorial_id: tutorialId
-    }, {
-      headers: { Authorization: `Bearer ${authStore.token}` }
     });
     comments.value.push(response.data);
     newCommentText.value = '';

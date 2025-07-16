@@ -23,8 +23,8 @@
 </template>
 
 <script setup>
+import api from '@/utils/api';
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
 import TutorialCard from '../components/TutorialCard.vue';
 import Layout from '../components/Layout.vue';
 
@@ -41,7 +41,7 @@ const fetchTutorials = async () => {
     if (selectedDifficulty.value) {
       params.append('difficulty', selectedDifficulty.value);
     }
-    const response = await axios.get(`/api/v1/tutorials/?${params.toString()}`);
+    const response = await api.get(`/tutorials/?${params.toString()}`);
     tutorials.value = response.data;
   } catch (error) {
     console.error("Error fetching tutorials:", error);

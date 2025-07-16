@@ -15,8 +15,8 @@
 </template>
 
 <script setup>
+import api from '@/utils/api';
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
 import PromptCard from '../components/PromptCard.vue';
 import Layout from '../components/Layout.vue';
 
@@ -24,7 +24,7 @@ const prompts = ref([]);
 
 const fetchPrompts = async () => {
   try {
-    const response = await axios.get('/api/v1/prompts/');
+    const response = await api.get('/prompts/');
     prompts.value = response.data;
   } catch (error) {
     console.error("Error fetching prompts:", error);

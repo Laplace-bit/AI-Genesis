@@ -21,21 +21,15 @@
 </template>
 
 <script setup>
+import api from '@/utils/api';
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
 import Layout from '../components/Layout.vue';
 
 const user = ref(null);
 
 const fetchUser = async () => {
   try {
-    // In a real app, you would get the token from where you stored it (e.g., localStorage)
-    const token = "YOUR_JWT_TOKEN"; // This needs to be replaced with actual token management
-    const response = await axios.get('/api/v1/users/me', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    const response = await api.get('/users/me');
     user.value = response.data;
   } catch (error) {
     console.error("Failed to fetch user:", error);
