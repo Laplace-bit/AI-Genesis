@@ -2,12 +2,15 @@
   <Layout>
     <div class="container mx-auto px-4 py-8">
       <div class="flex justify-between items-center my-8">
-        <h1 class="text-4xl font-bold text-center text-gray-800 dark:text-white">灵感工坊</h1>
-        <router-link to="/create-prompt" class="px-4 py-2 font-bold text-white bg-blue-600 rounded-md hover:bg-blue-700">分享你的灵感</router-link>
+        <ColourfulText text="灵感工坊" />
+        <GradientButton @click="goToCreatePrompt">分享你的灵感</GradientButton>
       </div>
       <div class="masonry">
         <div v-for="prompt in prompts" :key="prompt.id" class="masonry-item">
-          <PromptCard :prompt="prompt" />
+          <DirectionAwareHover :imageUrl="prompt.preview_url">
+            <p class="font-bold text-xl">{{ prompt.title }}</p>
+            <p class="font-normal text-sm">{{ prompt.model }}</p>
+          </DirectionAwareHover>
         </div>
       </div>
     </div>
@@ -17,10 +20,14 @@
 <script setup>
 import api from '@/utils/api';
 import { ref, onMounted } from 'vue';
-import PromptCard from '../components/PromptCard.vue';
+import { useRouter } from 'vue-router';
 import Layout from '../components/Layout.vue';
+import { ColourfulText } from '@/components/ui/colourful-text';
+import { GradientButton } from '@/components/ui/gradient-button';
+import { DirectionAwareHover } from '@/components/ui/direction-aware-hover';
 
 const prompts = ref([]);
+const router = useRouter();
 
 const fetchPrompts = async () => {
   try {
@@ -29,6 +36,10 @@ const fetchPrompts = async () => {
   } catch (error) {
     console.error("Error fetching prompts:", error);
   }
+};
+
+const goToCreatePrompt = () => {
+  router.push('/create-prompt');
 };
 
 onMounted(() => {

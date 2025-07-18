@@ -18,8 +18,8 @@
           </div>
           <div class="hidden md:block">
             <div class="ml-4 flex items-center md:ml-6">
-              <button @click="toggleTheme" class="p-2 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                <span v-if="isDarkMode">☀️</span>
+              <button @click="toggleDark()" class="p-2 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                <span v-if="isDark">☀️</span>
                 <span v-else>🌙</span>
               </button>
               <div v-if="isLoggedIn" class="flex items-center">
@@ -44,28 +44,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { computed } from 'vue';
 import { useAuthStore } from '../stores/auth';
+import { useDark, useToggle } from '@vueuse/core';
 
-const isDarkMode = ref(false);
 const authStore = useAuthStore();
 const isLoggedIn = computed(() => authStore.isLoggedIn);
 
-const toggleTheme = () => {
-  isDarkMode.value = !isDarkMode.value;
-  if (isDarkMode.value) {
-    document.documentElement.classList.add('dark');
-  } else {
-    document.documentElement.classList.remove('dark');
-  }
-};
-
-onMounted(() => {
-  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    isDarkMode.value = true;
-    document.documentElement.classList.add('dark');
-  }
-});
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
 </script>
 
 <style scoped>
